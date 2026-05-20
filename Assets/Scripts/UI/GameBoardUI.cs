@@ -46,6 +46,7 @@ public class GameBoardUI : MonoBehaviour
     // Prefabs
     [SerializeField] private GameObject cardUIPrefab;
     [SerializeField] private GameObject playerStatusPrefab;
+    [SerializeField] private CardTextureDatabase cardTextureDatabase;
 
     // Game state
     private Dictionary<int, PlayerHandUI> playerHandUIs = new Dictionary<int, PlayerHandUI>();
@@ -69,6 +70,19 @@ public class GameBoardUI : MonoBehaviour
     private bool winnerStackActive = false;
     private int winnerStackPlayerId = -1;
     private readonly Dictionary<int, List<List<Card>>> completedPlaysByPlayer = new Dictionary<int, List<List<Card>>>();
+
+    private void Awake()
+    {
+        // Load CardTextureDatabase FIRST if not assigned (before any cards are created)
+        if (cardTextureDatabase == null)
+        {
+            cardTextureDatabase = Resources.Load<CardTextureDatabase>("CardTextureDatabase");
+            if (cardTextureDatabase != null)
+            {
+                Debug.Log("CardTextureDatabase auto-loaded from Resources in Awake");
+            }
+        }
+    }
 
     private void Start()
     {
@@ -242,6 +256,7 @@ public class GameBoardUI : MonoBehaviour
 
                 PlayerHandUI handUI = handUIObj.AddComponent<PlayerHandUI>();
                 handUI.Initialize(player, cardUIPrefab, gameFlowController);
+                handUI.SetCardTextureDatabase(cardTextureDatabase);
                 playerHandUIs[player.playerID] = handUI;
             }
 
@@ -314,6 +329,11 @@ public class GameBoardUI : MonoBehaviour
     public void RefreshDisplay()
     {
         UpdateAllPlayerDisplays();
+    }
+
+    public void SetCardTextureDatabase(CardTextureDatabase database)
+    {
+        cardTextureDatabase = database;
     }
 
     public void SetSelectedCards(List<Card> selectedCards)
@@ -1017,26 +1037,44 @@ public class GameBoardUI : MonoBehaviour
         tileRect.anchoredPosition = offset;
 
         Image image = tileObj.AddComponent<Image>();
-        // Use same color scheme as card prefab but slightly translucent
-        image.color = trickCard.card.color == DaaluuColor.Red
-            ? new Color(0.93f, 0.45f, 0.38f, 0.95f)
-            : new Color(0.98f, 0.96f, 0.90f, 0.98f);
-
-        string colorLabel = trickCard.card.color == DaaluuColor.Red ? "R" : "W";
-        string janliiMark = GameRulesValidator.IsJanlii(trickCard.card, trickManager.GetJanliiPiece()) ? "\nJANLII" : "";
-
-        var playedText = CreateText(
-            "PlayedPieceText",
-            tileObj.transform,
-            Vector2.zero,
-            tileRect.sizeDelta,
-            20f,
-            TextAlignmentOptions.Center
-        );
-        if (playedText != null)
+        
+        // Try to get sprite from texture database
+        Sprite sprite = null;
+        if (cardTextureDatabase != null)
         {
-            playedText.color = new Color(0.08f, 0.06f, 0.04f, 1f);
-            playedText.text = $"{trickCard.card.displayName}\n{trickCard.card.value} {colorLabel}{janliiMark}";
+            sprite = cardTextureDatabase.GetSpriteForCard(trickCard.card);
+        }
+
+        if (sprite != null)
+        {
+            // Display sprite instead of colored background
+            image.sprite = sprite;
+            image.color = Color.white;
+            image.type = Image.Type.Simple;
+        }
+        else
+        {
+            // Fall back to colored background with text
+            image.color = trickCard.card.color == DaaluuColor.Red
+                ? new Color(0.93f, 0.45f, 0.38f, 0.95f)
+                : new Color(0.98f, 0.96f, 0.90f, 0.98f);
+
+            string colorLabel = trickCard.card.color == DaaluuColor.Red ? "R" : "W";
+            string janliiMark = GameRulesValidator.IsJanlii(trickCard.card, trickManager.GetJanliiPiece()) ? "\nJANLII" : "";
+
+            var playedText = CreateText(
+                "PlayedPieceText",
+                tileObj.transform,
+                Vector2.zero,
+                tileRect.sizeDelta,
+                20f,
+                TextAlignmentOptions.Center
+            );
+            if (playedText != null)
+            {
+                playedText.color = new Color(0.08f, 0.06f, 0.04f, 1f);
+                playedText.text = $"{trickCard.card.displayName}\n{trickCard.card.value} {colorLabel}{janliiMark}";
+            }
         }
 
         var byText = CreateText(
@@ -1321,7 +1359,8 @@ public class GameBoardUI : MonoBehaviour
         colors.pressedColor = new Color(0.86f, 0.82f, 0.66f, 1f);
         button.colors = colors;
 
-        cardObj.AddComponent<CardUI>();
+        CardUI cardUI = cardObj.AddComponent<CardUI>();
+        cardUI.SetTextureDatabase(cardTextureDatabase);
         var cardText = CreateText("CardText", cardObj.transform, Vector2.zero, rectTransform.sizeDelta, 20, TextAlignmentOptions.Center);
         // Card text should be dark on light card backgrounds
         if (cardText != null)

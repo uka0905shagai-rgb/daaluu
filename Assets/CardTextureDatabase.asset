@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f01071e680c8554492b913778e73ea5, type: 3}
+  m_Name: CardTextureDatabase
+  m_EditorClassIdentifier: Assembly-CSharp::CardTextureDatabase
+  defaultFrontAsset: {fileID: 0}
+  teaCardAsset: {fileID: 0}
+  cardSpriteEntries:
+  - pieceName: 12
+    frontAsset: {fileID: 2800000, guid: f6115b89082d9b04d8c66faefe6cc4b2, type: 3}
+  - pieceName: 2
+    frontAsset: {fileID: 2800000, guid: 0f6d6b9f0ca3c82458db57dcc2a4bd9c, type: 3}
+  - pieceName: 17
+    frontAsset: {fileID: 2800000, guid: dc94bf1eea487c347a47ce7befe4c8c0, type: 3}
+  - pieceName: 15
+    frontAsset: {fileID: 2800000, guid: 4da4e256150079240a47e6538d2665a2, type: 3}
+  - pieceName: 0
+    frontAsset: {fileID: 2800000, guid: 6c017cfdb8e246545b9cb68b61761670, type: 3}
+  - pieceName: 7
+    frontAsset: {fileID: 2800000, guid: e9d61dc46da0b0e44b497f02f442f418, type: 3}
+  - pieceName: 8
+    frontAsset: {fileID: 2800000, guid: f200ea2286e826b498d455361a04a7c8, type: 3}
+  - pieceName: 14
+    frontAsset: {fileID: 2800000, guid: a22765ec8a53e034da2697bfcc1b9225, type: 3}
+  - pieceName: 16
+    frontAsset: {fileID: 2800000, guid: 69992b903be01e6458025548d42576a6, type: 3}
+  - pieceName: 4
+    frontAsset: {fileID: 2800000, guid: 8a6acf39119458a4eab32863a007a625, type: 3}
+  - pieceName: 3
+    frontAsset: {fileID: 2800000, guid: 94d6671e528f89e40867162d5743b67c, type: 3}
+  - pieceName: 11
+    frontAsset: {fileID: 2800000, guid: e007348e6bd69044d93ace85cdd4ae67, type: 3}
+  - pieceName: 10
+    frontAsset: {fileID: 2800000, guid: a798fdccf82d5004d85df4cc843f90bc, type: 3}
+  - pieceName: 9
+    frontAsset: {fileID: 2800000, guid: 4c3ee3178d6a1b948900ff121a71c3d4, type: 3}
+  - pieceName: 6
+    frontAsset: {fileID: 2800000, guid: 1350ac7cee121154cada92859c4cc2fe, type: 3}
+  - pieceName: 13
+    frontAsset: {fileID: 2800000, guid: ea9ea65b52a329f4991c14e3cc35e84c, type: 3}
+  - pieceName: 1
+    frontAsset: {fileID: 2800000, guid: 9fae5e398aee2514381593d3dbf20560, type: 3}
+  - pieceName: 5
+    frontAsset: {fileID: 2800000, guid: 914aefd65172b834a899f14c25464ac9, type: 3}
+  - pieceName: 18
+    frontAsset: {fileID: 2800000, guid: 39ab563331942104496e0dcc46cec394, type: 3}

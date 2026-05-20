@@ -11,6 +11,7 @@ public class PlayerHandUI : MonoBehaviour
     private GameFlowController gameFlowController;
     private Transform cardContainer;
     private GameObject cardUIPrefab;
+    private CardTextureDatabase cardTextureDatabase;
     private Dictionary<Card, CardUI> cardUIs = new Dictionary<Card, CardUI>();
     private DaaluuPieceName? janliiPiece = null;
 
@@ -45,6 +46,11 @@ public class PlayerHandUI : MonoBehaviour
         }
     }
 
+    public void SetCardTextureDatabase(CardTextureDatabase database)
+    {
+        cardTextureDatabase = database;
+    }
+
     public void RefreshHandDisplay()
     {
         if (player == null) return;
@@ -76,6 +82,8 @@ public class PlayerHandUI : MonoBehaviour
             if (cardUI != null)
             {
                 cardUI.Initialize(card, player, gameFlowController);
+                if (cardTextureDatabase != null)
+                    cardUI.SetTextureDatabase(cardTextureDatabase);
                 cardUI.SetJanlii(janliiPiece.HasValue && card.pieceName == janliiPiece.Value);
                 cardUIs[card] = cardUI;
             }

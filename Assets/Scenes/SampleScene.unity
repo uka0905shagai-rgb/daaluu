@@ -443,6 +443,7 @@ GameObject:
   - component: {fileID: 344612831}
   - component: {fileID: 344612837}
   - component: {fileID: 344612836}
+  - component: {fileID: 344612838}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -474,6 +475,8 @@ MonoBehaviour:
   playerPositionsContainer: {fileID: 1068971233}
   cardUIPrefab: {fileID: 3313376018122491833, guid: f5f5d5fd5dc10254ba7dd38478170beb, type: 3}
   playerStatusPrefab: {fileID: 773164923830083845, guid: 430732c6b015a704198a8dcf2ffa1cf0, type: 3}
+  cardTextureDatabase: {fileID: 11400000, guid: 8340540dda618084486a452ec768b105, type: 2}
+  mainMenuSceneName: MainMenu
 --- !u!114 &344612832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -600,6 +603,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 344612830}
   m_CullTransparentMesh: 1
+--- !u!114 &344612838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 344612830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e441e0cd7e95d294eaa98e97d9005787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardTextureDebugger
+  cardTextureDatabase: {fileID: 11400000, guid: 8340540dda618084486a452ec768b105, type: 2}
 --- !u!1 &418134645
 GameObject:
   m_ObjectHideFlags: 0

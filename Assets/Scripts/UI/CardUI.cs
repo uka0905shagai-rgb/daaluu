@@ -7,6 +7,10 @@ using TMPro;
 /// </summary>
 public class CardUI : MonoBehaviour
 {
+    [SerializeField] private CardTextureDatabase textureDatabase;
+    [SerializeField] private Sprite defaultCardSprite;
+    [SerializeField] private bool hideTextWhenUsingTexture = true;
+
     private Card card;
     private Player owner;
     private GameFlowController gameFlowController;
@@ -19,11 +23,13 @@ public class CardUI : MonoBehaviour
     private readonly Color janliiColor = new Color(1f, 0.82f, 0.2f, 1f);
     private bool isSelected = false;
 
-    public void Initialize(Card cardRef, Player ownerRef, GameFlowController flowController)
+    public void Initialize(Card cardRef, Player ownerRef, GameFlowController flowController, CardTextureDatabase database = null)
     {
         card = cardRef;
         owner = ownerRef;
         gameFlowController = flowController;
+        if (database != null)
+            textureDatabase = database;
 
         cardButton = GetComponent<Button>();
         if (cardButton == null)
@@ -43,7 +49,51 @@ public class CardUI : MonoBehaviour
         cardButton.onClick.RemoveListener(OnCardClicked);
         cardButton.onClick.AddListener(OnCardClicked);
 
+        ApplyCardSprite();
         UpdateDisplay();
+    }
+
+    private void ApplyCardSprite()
+    {
+        if (cardImage == null || card == null)
+            return;
+
+        Sprite spriteToUse = GetCardSprite(card);
+        if (spriteToUse != null)
+        {
+            cardImage.sprite = spriteToUse;
+            cardImage.color = Color.white;
+            cardImage.type = Image.Type.Simple;
+            if (hideTextWhenUsingTexture && cardText != null)
+                cardText.enabled = false;
+        }
+        else if (defaultCardSprite != null)
+        {
+            cardImage.sprite = defaultCardSprite;
+            cardImage.color = Color.white;
+            cardImage.type = Image.Type.Simple;
+            if (hideTextWhenUsingTexture && cardText != null)
+                cardText.enabled = false;
+        }
+        else
+        {
+            cardImage.sprite = null;
+            cardImage.color = baseColor;
+            if (cardText != null)
+                cardText.enabled = true;
+        }
+    }
+
+    private Sprite GetCardSprite(Card card)
+    {
+        if (textureDatabase != null)
+        {
+            Sprite sprite = textureDatabase.GetSpriteForCard(card);
+            if (sprite != null)
+                return sprite;
+        }
+
+        return defaultCardSprite;
     }
 
     private void UpdateDisplay()
@@ -87,6 +137,12 @@ public class CardUI : MonoBehaviour
         baseColor = isJanlii ? janliiColor : defaultBaseColor;
         if (!this.isSelected && cardImage != null)
             cardImage.color = baseColor;
+    }
+
+    public void SetTextureDatabase(CardTextureDatabase database)
+    {
+        textureDatabase = database;
+        ApplyCardSprite();
     }
 
     public bool IsSelected()
